@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Impro</title>
+</head>
+<body>
+    <div class="logo-section">
+        
+        <div class="logo-ens-um5"><img src="./logoens.png"></div>
+        <h1 class="big-title">Match d'improvisation</h1>
+        <div class="logo-ens-um5"><img src="" alt="logo" srcset=""></div>
+    </div>
+    <main>
+        <section class="white-team">
+            <h1 >white team</h1>
+            <div class="container">
+                <p class="white-team-point">0 Point</p>
+                <button class="white-team-point-button">Push</button>
+            </div>
+        </section>
+        <div class="dash-board">
+            <div class="main-section">
+                <div class="clock">
+                    <p> &MediumSpace;00:00&MediumSpace;</p>
+                </div>
+                <div class="message-container">
+                    <p class="message">
+                        
+                    </p>
+                </div>
+            </div>
+            <div class="button-section">
+                <button class="start-button" style="margin-right: 10px;">START MATCH</button>
+                <input type="number" value="1" min="1" name="set-time" id="set-time" style="margin-right: 10px;font-size: 2.5rem;width: 5rem;">
+                <label for="set-time" style="font-size: 2.5rem;margin-right: 10px;">minute</label>
+                <button class="reset">RESET</button>
+            </div>
+        </div>
+        <section class="black-team">
+            <h1 style="color: white;">black team</h1>
+            <div class="container">
+                <p class="black-team-point">0 Point</p>
+                <button class="black-team-point-button">Push</button>
+            </div>
+        </section>
+    </main>
+    <footer>Designed and developed by Soufiane AMIMI</footer>
+</body>
+<script>
+    const whitePointsDoc = document.querySelector('.white-team-point');
+    const blackPointsDoc = document.querySelector('.black-team-point');
+
+    const whiteButton = document.querySelector('.white-team-point-button');
+    const blackButton = document.querySelector('.black-team-point-button');
+
+    const resetButton = document.querySelector('.reset');
+
+    const startButton = document.querySelector('.start-button');
+
+    const messageField = document.querySelector('.message-container .message');
+
+    const clockDisplay = document.querySelector('.clock p');
+    const setTime = document.querySelector('#set-time');
+
+    let whitePoints = 0, blackPoints = 0;
+
+    whiteButton.addEventListener('click', function(){
+        ++whitePoints;
+        whitePointsDoc.textContent = whitePoints + " Point(s)";
+    });
+
+    blackButton.addEventListener('click', function(){
+        ++blackPoints;
+        blackPointsDoc.textContent = blackPoints + " Point(s)";
+    });
+
+    resetButton.addEventListener('click', function(){
+        whitePoints = 0;
+        blackPoints = 0;
+        blackPointsDoc.textContent = "0 Point";
+        whitePointsDoc.textContent = "0 Point";
+    })
+
+    const startTiming = (minutes) => {
+        minutes = +minutes;
+        if(minutes === 0){
+                    messageField.textContent = "0 min";
+                    return;
+                }
+        let oneMinute = 60;
+        --minutes;
+        const myTime = setInterval(() => {
+            --oneMinute;
+            console.log(oneMinute);
+            if(oneMinute === 0 ) {
+                if(minutes === 0){
+                    messageField.textContent = "TIMEOUT";
+                    clockDisplay.textContent = `00:00`;
+                    clearInterval(myTime);
+                    return;
+                }
+                --minutes;
+                oneMinute = 60;
+            }
+            clockDisplay.innerHTML = `&MediumSpace;${String(minutes).padStart(2, "0")}:${String(oneMinute).padStart(2, "0")}&MediumSpace; `;
+        }, 1000);
+        
+    }
+
+    startButton.addEventListener('click', async function(){
+        let count = 3;
+        messageField.textContent = count;
+        const interval = setInterval(() => {
+            --count;
+            messageField.textContent = count;
+            if(count === 0) {
+                messageField.textContent = "IMPRO!!";
+                startTiming(setTime.value);
+                clearInterval(interval);
+            }
+        }, 1000);
+        
+    });
+
+    
+    
+
+
+</script>
+</html>
